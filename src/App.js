@@ -1,16 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-import Clock from "./Clock";
+function Clock() {
+  const [time, setTime] = useState(new Date());
 
-function App() {
-  const [showClock, setShowClock] = useState(true);
+  useEffect(() => {
+    const timerID= setInterval(() => {
+      setTime(new Date());
+    }, 1000);
 
-  return (
-    <div>
-      {showClock ? <Clock /> : null}
-      <button onClick={() => setShowClock(!showClock)}>Toggle Clock</button>
-    </div>
-  );
+    return function cleanup() {
+      clearInterval(timerID);
+    };
+  }, []);
+
+  return <div>{time.toString()}</div>;
 }
 
-export default App;
+export default Clock;
